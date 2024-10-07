@@ -551,7 +551,7 @@ openvas (int argc, char *argv[], char *env[])
       printf ("GIT revision %s\n", OPENVAS_GIT_REVISION);
 #endif
       printf ("gvm-libs %s\n", gvm_libs_version ());
-      printf ("Most new code since 2005: (C) 2022 Greenbone Networks GmbH\n");
+      printf ("Most new code since 2005: (C) 2024 Greenbone AG\n");
       printf (
         "Nessus origin: (C) 2004 Renaud Deraison <deraison@nessus.org>\n");
       printf ("License GPLv2: GNU GPL version 2\n");
@@ -625,6 +625,7 @@ openvas (int argc, char *argv[], char *env[])
   /* openvas --scan-start */
   if (scan_id)
     {
+      int attack_error = 0;
       struct scan_globals *globals;
       set_scan_id (g_strdup (scan_id));
       globals = g_malloc0 (sizeof (struct scan_globals));
@@ -635,13 +636,19 @@ openvas (int argc, char *argv[], char *env[])
           destroy_scan_globals (globals);
           return EXIT_FAILURE;
         }
-      attack_network (globals);
+      attack_error = attack_network (globals);
 
       gvm_close_sentry ();
       destroy_scan_globals (globals);
 #ifdef LOG_REFERENCES_AVAILABLE
       free_log_reference ();
 #endif // LOG_REFERENCES_AVAILABLE
+
+      if (attack_error)
+        {
+          g_warning ("Scan ending with FAILURE status");
+          return EXIT_FAILURE;
+        }
       return EXIT_SUCCESS;
     }
 

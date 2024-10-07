@@ -10,10 +10,8 @@ if (description)
   script_tag(name:"qod_type", value:"remote_banner");
   script_family("Product detection");
   script_copyright("Copyright (C) 2023 Greenbone AG");
-  script_require_ports("Services/www", 6262);
-  script_exclude_keys("Settings/disable_cgi_scanning");
   script_tag(name:"summary", value:"HTTP AS detection");
   script_xref(name:"URL", value:"https://greenbone.net");
   exit(0);
 }
-exit(42);
+exit(0);

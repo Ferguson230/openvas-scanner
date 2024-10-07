@@ -227,7 +227,7 @@ main (int argc, char **argv)
       else
         putchar ('\n');
       printf ("Copyright (C) 2002 - 2004 Tenable Network Security\n");
-      printf ("Copyright (C) 2022 Greenbone Networks GmbH\n\n");
+      printf ("Copyright (C) 2024 Greenbone AG\n\n");
       exit (0);
     }
   if (nasl_debug)
@@ -386,12 +386,12 @@ main (int argc, char **argv)
 
           if (exec_nasl_script (script_infos, mode) < 0)
             err++;
+
+          if (process_id != getpid ())
+            exit (0);
         }
       g_free (script_infos->globals);
       g_free (script_infos);
-
-      if (process_id != getpid ())
-        exit (0);
 
       kb_delete (kb);
     }
